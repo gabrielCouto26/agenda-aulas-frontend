@@ -1,8 +1,8 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Login from './views/login';
 import routes from './routes';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Register from "./views/register";
 import { Container } from 'react-bootstrap';
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/">
-              <Route index element={<Register/>} />
+              <Route index element={<Login/>} />
               {routes.map((prop, key) => {
                 return (
                   <Route

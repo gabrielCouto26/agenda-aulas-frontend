@@ -30,10 +30,10 @@ export default function Register() {
       } else {
         await axios.post("http://localhost:8080/users",
           { name, email, password, birthDate }
-        ).then(res => {
-          if(res.status === 200)
+        ).then(({ data }) => {
+          if(data.status === 200)
             setShouldRedirect(true)
-          else if(res.status === 500)
+          else if(data.status === 500)
             setRegistered(true)
         }).catch(e => {
           setInvalidInputs(true)
