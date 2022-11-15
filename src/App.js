@@ -1,5 +1,6 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Menu from './components/menu';
 import Login from './views/login';
 import routes from './routes';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -8,6 +9,7 @@ import { Container } from 'react-bootstrap';
 function App() {
   return (
     <div className="App">
+      <Menu />
       <Container>
         <BrowserRouter>
           <Routes>

@@ -22,7 +22,6 @@ export default function Login() {
     if(!email || !password){
       setInvalidInputs(true)
       setShouldRedirect(false)
-      console.log("entrou aqui")
     } else {
       await axios.post("http://localhost:8080/login",
         // { email, password, profileType }
