@@ -41,7 +41,6 @@ export default function Login() {
         setRegistered(false)
       })
     }
-    console.log({shouldRedirect})
   }
 
   return(
