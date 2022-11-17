@@ -7,8 +7,8 @@ import axios from "axios";
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [profileType, setProfileType] = useState(0)
-  const [userId, setUserId] = useState(0)
+  const [profileType, setProfileType] = useState(null)
+  const [userId, setUserId] = useState(null)
   const [registered, setRegistered] = useState(false)
   const [shouldRedirect, setShouldRedirect] = useState(false)
   const [invalidInputs, setInvalidInputs] = useState(false)
