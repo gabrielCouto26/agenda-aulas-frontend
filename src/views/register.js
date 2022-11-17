@@ -8,7 +8,7 @@ export default function Register() {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [birthDate, setBirthDate] = useState("")
+    const [birth_date, setBirthDate] = useState("")
     const [profileType, setProfileType] = useState(0)
     const [registered, setRegistered] = useState(false)
     const [shouldRedirect, setShouldRedirect] = useState(false)
@@ -17,19 +17,16 @@ export default function Register() {
     const handleNameChange = (e) => setName(e.target.value)
     const handleEmailChange = (e) => setEmail(e.target.value)
     const handlePasswordChange = (e) => setPassword(e.target.value)
-    const handleBirthDateChange = (e) => {
-      const date = e.target.value.split('-').reverse().join('/')
-      setBirthDate(date)
-    }
+    const handleBirthDateChange = (e) => setBirthDate(e.target.value)
     const handleProfileTypeChange = (e) => setProfileType(parseInt(e.target.value))
     const handleRegister = async (e) => {
       e.preventDefault()
-      if(!name || !email || !password || !birthDate || !profileType){
+      if(!name || !email || !password || !birth_date || !profileType){
         setInvalidInputs(true)
         setShouldRedirect(false)
       } else {
         await axios.post("http://localhost:8080/users",
-          { name, email, password, birthDate }
+          { name, email, password, birth_date }
         ).then(({ data }) => {
           if(data.status === 200)
             setShouldRedirect(true)
