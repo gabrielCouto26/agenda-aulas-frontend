@@ -7,15 +7,22 @@ export default class Dashboard extends React.Component{
     state = {
         availableClasses: [],
         sugestedClasses: [],
-        subjects: []
+        subjects: [],
+        profile: localStorage.getItem("profileType") === "1" ? "artist" : "teacher",
+        requestedText: localStorage.getItem("profileType") === "1" ? "sugeridas" : "oferecidas"
     }
 
     async componentDidMount() {
-        await axios.get('http://localhost:8080/dashboard')
+        await axios.post('http://localhost:8080/dashboard', {
+          "dashboard": {
+            "user_id": localStorage.getItem("userId"),
+            "profileType": localStorage.getItem("profileType")
+          }
+        })
         .then(({ data }) => {
             this.setState({
                 availableClasses: data.data.available || [],
-                sugestedClasses: data.data.sugested || [],
+                sugestedClasses: data.data.requested || [],
                 subjects: data.data.subjects || [],
             })
         })
@@ -27,9 +34,9 @@ export default class Dashboard extends React.Component{
 
     render(){
         return (
-            <Stack gap={5} className="mt-4">
+            <Stack gap={4} className="mt-4">
                 <ListClasses title="Classes disponíveis" classes={this.state.availableClasses}/>
-                <ListClasses title="Classes sugeridas" classes={this.state.sugestedClasses}/>
+                <ListClasses title={`Classes ${this.state.requestedText}`} classes={this.state.sugestedClasses}/>
                 <ListClasses title="Tópicos" classes={this.state.subjects}/>
             </Stack>
         )

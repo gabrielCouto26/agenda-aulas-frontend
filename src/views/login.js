@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Stack } from "react-bootstrap";
 import { Link, Navigate } from "react-router-dom";
 
@@ -8,6 +8,7 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [profileType, setProfileType] = useState(0)
+  const [userId, setUserId] = useState(0)
   const [registered, setRegistered] = useState(false)
   const [shouldRedirect, setShouldRedirect] = useState(false)
   const [invalidInputs, setInvalidInputs] = useState(false)
@@ -15,7 +16,7 @@ export default function Login() {
 
   const handleEmailChange = (e) => setEmail(e.target.value)
   const handlePasswordChange = (e) => setPassword(e.target.value)
-  const handleProfileTypeChange = (e) => setProfileType(parseInt(e.target.value))
+  const handleProfileTypeChange = (e) => setProfileType(e.target.value)
   const handleLogin = async (e) => {
     e.preventDefault()
     if(!email || !password){
@@ -27,8 +28,8 @@ export default function Login() {
       ).then(({ data }) => {
         if (data.status === 204) {
           setShouldRedirect(true)
-          localStorage.userId = data.data.user_id
-          localStorage.profileType = profileType
+          setUserId(data.data.user_id)
+          setProfileType(profileType)
         } else if (data.status === 401) {
           setErrorMessage(data.data)
         } else if (data.status === 404) {
@@ -41,6 +42,11 @@ export default function Login() {
       })
     }
   }
+
+  useEffect(() => {
+    localStorage.setItem("userId", userId)
+    localStorage.setItem("profileType", profileType)
+  }, [userId, profileType])
 
   return(
     <Stack>
