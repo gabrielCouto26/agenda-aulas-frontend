@@ -7,7 +7,7 @@ import axios from "axios";
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  // const [profileType, setProfileType] = useState(0)
+  const [profileType, setProfileType] = useState(0)
   const [registered, setRegistered] = useState(false)
   const [shouldRedirect, setShouldRedirect] = useState(false)
   const [invalidInputs, setInvalidInputs] = useState(false)
@@ -15,21 +15,20 @@ export default function Login() {
 
   const handleEmailChange = (e) => setEmail(e.target.value)
   const handlePasswordChange = (e) => setPassword(e.target.value)
-  // const handleProfileTypeChange = (e) => setProfileType(parseInt(e.target.value))
+  const handleProfileTypeChange = (e) => setProfileType(parseInt(e.target.value))
   const handleLogin = async (e) => {
     e.preventDefault()
-    // if(!email || !password || !profileType){
     if(!email || !password){
       setInvalidInputs(true)
       setShouldRedirect(false)
     } else {
       await axios.post("http://localhost:8080/login",
-        // { email, password, profileType }
         { email, password }
       ).then(({ data }) => {
         if (data.status === 204) {
           setShouldRedirect(true)
           localStorage.userId = data.data.user_id
+          localStorage.profileType = profileType
         } else if (data.status === 401) {
           setErrorMessage(data.data)
         } else if (data.status === 404) {
@@ -67,15 +66,16 @@ export default function Login() {
             onChange={handlePasswordChange.bind(this)}
           />
         </Form.Group>
-        {/* <Form.Group className="mb-3">
+        <Form.Group className="mb-3">
           <Form.Label>Sou</Form.Label>
           <Form.Select
             onChange={handleProfileTypeChange.bind(this)}
           >
-              <option value="1">Aluno(a)</option>
-              <option value="2">Professor(a)</option>
+            <option>Selecione um tipo</option>
+            <option value="1">Aluno(a)</option>
+            <option value="2">Professor(a)</option>
           </Form.Select>
-        </Form.Group> */}
+        </Form.Group>
         <Button variant="primary" type="submit" onClick={handleLogin.bind(this)}>
           Entrar
         </Button>
