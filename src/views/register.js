@@ -9,7 +9,7 @@ export default function Register() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [birth_date, setBirthDate] = useState("")
-    const [profileType, setProfileType] = useState(0)
+    const [_type, setProfileType] = useState(0)
     const [registered, setRegistered] = useState(false)
     const [shouldRedirect, setShouldRedirect] = useState(false)
     const [invalidInputs, setInvalidInputs] = useState(false)
@@ -21,12 +21,15 @@ export default function Register() {
     const handleProfileTypeChange = (e) => setProfileType(parseInt(e.target.value))
     const handleRegister = async (e) => {
       e.preventDefault()
-      if(!name || !email || !password || !birth_date || !profileType){
+      if(!name || !email || !password || !birth_date || !_type){
         setInvalidInputs(true)
         setShouldRedirect(false)
       } else {
         await axios.post("http://localhost:8080/users",
-          { name, email, password, birth_date }
+          {
+            "user": { name, email, password, birth_date },
+            "profile": { _type }
+          }
         ).then(({ data }) => {
           if(data.status === 200)
             setShouldRedirect(true)
@@ -81,6 +84,7 @@ export default function Register() {
               <Form.Select
                 onChange={handleProfileTypeChange.bind(this)}
               >
+                  <option>Selecione um tipo</option>
                   <option value="1">Aluno(a)</option>
                   <option value="2">Professor(a)</option>
               </Form.Select>
