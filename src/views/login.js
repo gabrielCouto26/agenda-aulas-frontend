@@ -16,7 +16,6 @@ export default function Login() {
 
   const handleEmailChange = (e) => setEmail(e.target.value)
   const handlePasswordChange = (e) => setPassword(e.target.value)
-  const handleProfileTypeChange = (e) => setProfileType(e.target.value)
   const handleLogin = async (e) => {
     e.preventDefault()
     if(!email || !password){
@@ -29,7 +28,7 @@ export default function Login() {
         if (data.status === 204) {
           setShouldRedirect(true)
           setUserId(data.data.user_id)
-          setProfileType(profileType)
+          setProfileType(data.data.profile_type)
         } else if (data.status === 401) {
           setErrorMessage(data.data)
         } else if (data.status === 404) {
@@ -72,16 +71,7 @@ export default function Login() {
             onChange={handlePasswordChange.bind(this)}
           />
         </Form.Group>
-        <Form.Group className="mb-3">
-          <Form.Label>Sou</Form.Label>
-          <Form.Select
-            onChange={handleProfileTypeChange.bind(this)}
-          >
-            <option>Selecione um tipo</option>
-            <option value="1">Aluno(a)</option>
-            <option value="2">Professor(a)</option>
-          </Form.Select>
-        </Form.Group>
+
         <Button variant="primary" type="submit" onClick={handleLogin.bind(this)}>
           Entrar
         </Button>
