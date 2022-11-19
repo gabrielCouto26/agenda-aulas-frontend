@@ -5,48 +5,73 @@ import { useParams } from "react-router";
 export default function ClassDetails() {
   const { id } = useParams()
 
-  // const [subject, setSubject] = useState("")
+  const [userName, setUserName] = useState("")
+  const [profile, setProfile] = useState("")
+  const [subject, setSubject] = useState("")
+  const [className, setClassName] = useState("")
   const [price, setPrice] = useState("")
   const [start_date, setStart_date] = useState("")
   const [class_duration, setClass_duration] = useState("")
-  const [duration_expectation, setDuration_expectation] = useState("")
+  const [end_expectation, setEnd_expectation] = useState("")
   const [online, setOnline] = useState(false)
   const [available, setAvailable] = useState(false)
   const [origin, setOrigin] = useState("")
-  const [classroom_id, setClassroom_id] = useState("")
-
 
   useEffect(() => {
+    getUser(localStorage.getItem("userId"))
+    setUserProfile(localStorage.getItem("profileType"))
     getClassDetails()
+    getSubject()
   })
+
+  const getUser = (id) => {
+    axios.get("http://localhost:8080/users/" + id)
+    .then(({ data }) => {
+      setUserName(data.data.name)
+    })
+  }
 
   const getClassDetails = () => {
     axios.get("http://localhost:8080/class_details/classroom/" + id)
     .then(({ data }) => {
-      // setSubject(data.subject)
       setPrice(data.data.price)
-      setStart_date(data.data.start_date)
+      const formatedDate = data.data.start_date.split("T")[0].split('-').reverse().join('/')
+      setStart_date(formatedDate)
       setClass_duration(data.data.class_duration)
-      setDuration_expectation(data.data.duration_expectation)
-      setOnline(data.data.online)
-      setAvailable(data.data.available)
-      setOrigin(data.data.origin)
-      setClassroom_id(data.data.classroom_id)
+      setEnd_expectation(data.data.end_expectation)
+      setOnline(data.data.online ? "Sim": "Não")
+      setAvailable(data.data.available ? "Sim": "Não")
+      setOrigin(data.data.origin === "offered" ? "Oferecida" : "Sugerida")
     })
+  }
+
+  const getSubject = () => {
+    axios.get("http://localhost:8080/classrooms/" + id)
+    .then(({ data }) => {
+      setClassName(data.data.name)
+      axios.get("http://localhost:8080/subjects/" + data.data.subject_id)
+      .then(({ data }) => {
+        setSubject(data.data.name)
+      })
+    })
+  }
+
+  const setUserProfile = (type) => {
+    const profile = type === "1" ? "Aluno" : "Professor"
+    setProfile(profile)
   }
 
   return(
     <div>
-      <h1>Class Details</h1>
-      {/* <h1>{subject}</h1> */}
-      <p>{price}</p>
-      <p>{start_date}</p>
-      <p>{class_duration}</p>
-      <p>{duration_expectation}</p>
-      <p>{online}</p>
-      <p>{available}</p>
-      <p>{origin}</p>
-      <p>{classroom_id}</p>
+      <h1 className="my-4">Detalhes: {className}</h1>
+      <p><strong>Tópico:</strong> {subject}</p>
+      <p><strong>Preço:</strong> R$ {price}</p>
+      <p><strong>Início:</strong> {start_date}</p>
+      <p><strong>Aulas necessárias:</strong> {end_expectation} aulas</p>
+      <p><strong>Duração das aulas:</strong> {class_duration} horas</p>
+      <p><strong>Online?</strong> {online}</p>
+      <p><strong>Disponível?</strong> {available}</p>
+      <p><strong>Origem:</strong> {origin} pelo {profile} {userName}</p>
     </div>
   )
 }
