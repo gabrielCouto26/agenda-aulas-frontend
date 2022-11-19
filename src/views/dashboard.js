@@ -9,7 +9,7 @@ export default class Dashboard extends React.Component{
         sugestedClasses: [],
         subjects: [],
         profile: localStorage.getItem("profileType") === "1" ? "artist" : "teacher",
-        requestedText: localStorage.getItem("profileType") === "1" ? "sugeridas" : "oferecidas"
+        requestedText: localStorage.getItem("profileType") === "1" ? "por mim" : "por alunos"
     }
 
     async componentDidMount() {
@@ -36,7 +36,7 @@ export default class Dashboard extends React.Component{
         return (
             <Stack gap={4} className="mt-4">
                 <ListClasses title="Classes disponíveis" classes={this.state.availableClasses}/>
-                <ListClasses title={`Classes ${this.state.requestedText}`} classes={this.state.sugestedClasses}/>
+                <ListClasses title={`Classes sugeridas ${this.state.requestedText}`} classes={this.state.sugestedClasses}/>
                 <ListClasses title="Tópicos" classes={this.state.subjects}/>
             </Stack>
         )
