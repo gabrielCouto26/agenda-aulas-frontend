@@ -9,7 +9,7 @@ export default function Register() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [birth_date, setBirthDate] = useState("")
-  const [_type, setProfileType] = useState(0)
+  const [_type, setProfileType] = useState("")
   const [registered, setRegistered] = useState(false)
   const [shouldRedirect, setShouldRedirect] = useState(false)
   const [invalidInputs, setInvalidInputs] = useState(false)
@@ -19,7 +19,7 @@ export default function Register() {
   const handleEmailChange = (e) => setEmail(e.target.value)
   const handlePasswordChange = (e) => setPassword(e.target.value)
   const handleBirthDateChange = (e) => setBirthDate(e.target.value)
-  const handleProfileTypeChange = (e) => setProfileType(parseInt(e.target.value))
+  const handleProfileTypeChange = (e) => setProfileType(e.target.value)
   const handleRegister = async (e) => {
     e.preventDefault()
     if (!name || !email || !password || !birth_date || !_type) {
@@ -37,25 +37,20 @@ export default function Register() {
         "profile": { _type }
       }
     ).then(({ data }) => {
-      if (data.status === 200)
+      if (data.status === 200){
+        const userId = data.data.id
+
+        if (_type === "1")
+          create_student(userId)
+        else if (_type === "2")
+          create_teacher(userId)
+
         setShouldRedirect(true)
-
-      const userId = data.data.id
-      if (_type === "1")
-        create_student(userId)
-          .catch(e => {
-            setErrorMessage("Falha ao cadastrar aluno")
-            console.log(e)
-          })
-      else if (_type === "2")
-        create_teacher(userId)
-          .catch(e => {
-            setErrorMessage("Falha ao cadastrar professor")
-            console.log(e)
-          })
-
-      else if (data.status === 500)
+      } else if (data.status === 401){
+        setErrorMessage("Email já cadastrado")
+      } else if (data.status === 500){
         setRegistered(true)
+      }
     }).catch(e => {
       setErrorMessage("Falha ao cadastrar usuário")
       console.log(e)
@@ -65,11 +60,19 @@ export default function Register() {
   }
 
   const create_student = async (user_id) => {
-    return await axios.post("http://localhost:8080/students", { user_id })
+    await axios.post("http://localhost:8080/students", { user_id })
+            .catch(e => {
+              setErrorMessage("Falha ao cadastrar aluno")
+              console.log(e)
+            })
   }
 
   const create_teacher = async (user_id) => {
-    return await axios.post("http://localhost:8080/teachers", { user_id })
+    await axios.post("http://localhost:8080/teachers", { user_id })
+            .catch(e => {
+              setErrorMessage("Falha ao cadastrar professor")
+              console.log(e)
+            })
   }
 
   return (
