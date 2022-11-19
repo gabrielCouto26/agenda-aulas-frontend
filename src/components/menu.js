@@ -1,5 +1,5 @@
 import Container from 'react-bootstrap/Container';
-import { Stack, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Stack, Nav, Navbar } from "react-bootstrap";
 import { useEffect, useState } from 'react';
 
 export default function Menu() {
@@ -24,17 +24,7 @@ export default function Menu() {
             <Stack direction="horizontal">
               <Nav.Link href="/class/new">Nova Classe</Nav.Link>
               <Nav.Link href="/class/list">Minhas Classes</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
+              <Nav.Link href="/profile">Perfil</Nav.Link>
             </Stack>
             {
               window.location.pathname !== '/' && window.location.pathname !== '/register' &&
