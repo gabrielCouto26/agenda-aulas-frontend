@@ -2,6 +2,7 @@ import Dashboard from "./views/dashboard";
 import Register from "./views/register";
 import NewClass from "./views/newClass";
 import MyClasses from "./views/myClasses";
+import ClassDetails from "./views/classDetails";
 
 const routes = [
     {
@@ -23,6 +24,11 @@ const routes = [
       path: "/class/list",
       name: "My Classes",
       component: <MyClasses/>
+    },
+    {
+      path: "/class/:id/details",
+      name: "Class Details",
+      component: <ClassDetails/>
     }
 ]
 

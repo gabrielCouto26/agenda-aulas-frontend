@@ -8,7 +8,7 @@ export default function ListClasses({ title, classes }) {
       <Stack direction="horizontal" className="my-4">
         { classes.map((c, index) => {
           return (
-            <ClassCard name={c.name} key={index}/>
+            <ClassCard id={c.id} name={c.name} key={index}/>
           )
         })}
       </Stack>
