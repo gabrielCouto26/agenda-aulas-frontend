@@ -6,7 +6,7 @@ import axios from "axios";
 export default class NewClass extends React.Component {
   state = {
     name: "",
-    subject: null,
+    subject_id: null,
     subjects: [],
     price: 0,
     startDate: "",
@@ -21,9 +21,12 @@ export default class NewClass extends React.Component {
   }
 
   handleNameChange = (e) => this.setState({ name: e.target.value })
-  handleSubjectChange = (e) => this.setState({ subject: e.target.value })
+  handleSubjectChange = (e) => this.setState({ subject_id: e.target.value })
   handlePriceChange = (e) => this.setState({ price: parseFloat(e.target.value) })
-  handleStartDateChange = (e) => this.setState({ startDate: parseInt(e.target.value) })
+  handleStartDateChange = (e) => {
+    const date = e.target.value.replace(/-/g, '/')
+    this.setState({ startDate: date})
+  }
   handleClassDurationChange = (e) => this.setState({ classDuration: e.target.value })
   handleEndExpectationChange = (e) => this.setState({ endExpectation: e.target.value })
   handleOnlineChange = (e) => this.setState({ online: e.target.checked })
@@ -31,7 +34,7 @@ export default class NewClass extends React.Component {
   handleCreate = async (e) => {
     e.preventDefault()
 
-    if(!this.state.name || !this.state.subject || !this.state.price || 
+    if(!this.state.name || !this.state.subject_id || !this.state.price || 
       !this.state.startDate || !this.state.classDuration || !this.state.endExpectation ||
       this.state.online == null){
         this.setState({ invalidInputs: true })
@@ -58,16 +61,15 @@ export default class NewClass extends React.Component {
     const { data } = await axios.get("http://localhost:8080/students/user/" + localStorage.getItem("userId"))
 
     await axios.post("http://localhost:8080/students/" + data.data.id + "/classrooms",
-      { "classroom": { name: this.state.name } }
+      { "classroom": { name: this.state.name, subject_id: this.state.subject_id } }
     ).then(async ({ data }) => {
       if(data.status === 200){
         await axios.post("http://localhost:8080/class_details", {
           "class_detail": {
-            subject: this.state.subject,
             price: this.state.price,
             start_date: this.state.startDate,
             class_duration: this.state.classDuration,
-            duration_expectation: this.state.endExpectation,
+            end_expectation: this.state.endExpectation,
             online: this.state.online,
             available: false,
             origin: "requested",
@@ -88,20 +90,15 @@ export default class NewClass extends React.Component {
     const { data } = await axios.get("http://localhost:8080/teachers/user/" + localStorage.getItem("userId"))
 
     await axios.post("http://localhost:8080/teachers/" + data.data.id + "/classrooms",
-      {
-        "classroom": {
-          name: this.state.name
-        }
-      }
+      { "classroom": { name: this.state.name, subject_id: this.state.subject_id } }
     ).then(async ({ data }) => {
       if(data.status === 200){
         await axios.post("http://localhost:8080/class_details", {
           "class_detail": {
-            subject: this.state.subject,
             price: this.state.price,
             start_date: this.state.startDate,
             class_duration: this.state.classDuration,
-            duration_expectation: this.state.endExpectation,
+            end_expectation: this.state.endExpectation,
             online: this.state.online,
             available: true,
             origin: "offered",
