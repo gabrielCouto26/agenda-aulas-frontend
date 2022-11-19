@@ -22,7 +22,7 @@ export default function Menu() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Stack direction="horizontal">
-              <Nav.Link href="#home">Nova Classe</Nav.Link>
+              <Nav.Link href="/class/new">Nova Classe</Nav.Link>
               <Nav.Link href="#link">Minhas Classes</Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
