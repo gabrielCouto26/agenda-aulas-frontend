@@ -22,12 +22,12 @@ export default class MyClasses extends React.Component {
           for(let c of data.data){
             const response = await axios.get("http://localhost:8080/class_details/classroom/" + c.id)
             let classDetail = response.data.data
-            let haveBegun = new Date(classDetail.start_date) > new Date()
+            let haveBegun = new Date(classDetail.start_date) < new Date()
             if(classDetail.available === true && haveBegun)
               inProgress.push(c)
             else if(classDetail.origin === "offered" && !haveBegun)
               offered.push(c)
-            else
+            else if(classDetail.available === false && haveBegun)
               finished.push(c)
           }
           this.setState({ inProgress, offered, finished })
