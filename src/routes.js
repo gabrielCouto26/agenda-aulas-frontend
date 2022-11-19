@@ -1,6 +1,7 @@
 import Dashboard from "./views/dashboard";
 import Register from "./views/register";
 import NewClass from "./views/newClass";
+import MyClasses from "./views/myClasses";
 
 const routes = [
     {
@@ -17,7 +18,12 @@ const routes = [
       path: "/class/new",
       name: "New Class",
       component: <NewClass/>
-  }
+    },
+    {
+      path: "/class/list",
+      name: "My Classes",
+      component: <MyClasses/>
+    }
 ]
 
 export default routes;

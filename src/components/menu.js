@@ -17,13 +17,13 @@ export default function Menu() {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">Projeto de Bloco</Navbar.Brand>
+        <Navbar.Brand href="/dashboard">Projeto de Bloco</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Stack direction="horizontal">
               <Nav.Link href="/class/new">Nova Classe</Nav.Link>
-              <Nav.Link href="#link">Minhas Classes</Nav.Link>
+              <Nav.Link href="/class/list">Minhas Classes</Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
