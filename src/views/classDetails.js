@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
+import { Stack } from "react-bootstrap";
 
 export default function ClassDetails() {
   const { id } = useParams()
 
-  const [userName, setUserName] = useState("")
-  const [profile, setProfile] = useState("")
+  const [teacherId, setTeacherId] = useState("")
+  const [teacherName, setTeacherName] = useState("")
   const [subject, setSubject] = useState("")
   const [className, setClassName] = useState("")
   const [price, setPrice] = useState("")
@@ -18,18 +19,9 @@ export default function ClassDetails() {
   const [origin, setOrigin] = useState("")
 
   useEffect(() => {
-    getUser(localStorage.getItem("userId"))
-    setUserProfile(localStorage.getItem("profileType"))
     getClassDetails()
     getSubject()
   })
-
-  const getUser = (id) => {
-    axios.get("http://localhost:8080/users/" + id)
-    .then(({ data }) => {
-      setUserName(data.data.name)
-    })
-  }
 
   const getClassDetails = () => {
     axios.get("http://localhost:8080/class_details/classroom/" + id)
@@ -42,6 +34,12 @@ export default function ClassDetails() {
       setOnline(data.data.online ? "Sim": "Não")
       setAvailable(data.data.available ? "Sim": "Não")
       setOrigin(data.data.origin === "offered" ? "Oferecida" : "Sugerida")
+
+      axios.get("http://localhost:8080/classrooms/" + id)
+      .then(({ data }) => {
+        setTeacherId(data.data.teacher_id)
+        getTeacher(data.data.teacher_id)
+      })
     })
   }
 
@@ -56,9 +54,15 @@ export default function ClassDetails() {
     })
   }
 
-  const setUserProfile = (type) => {
-    const profile = type === "1" ? "Aluno" : "Professor"
-    setProfile(profile)
+  const getTeacher = (id) => {
+    axios.get("http://localhost:8080/teachers/" + id)
+    .then(({ data }) => {
+
+      axios.get("http://localhost:8080/users/" + data.data.user_id)
+      .then(({ data }) => {
+        setTeacherName(data.data.name)
+      })
+    })
   }
 
   return(
@@ -71,7 +75,16 @@ export default function ClassDetails() {
       <p><strong>Duração das aulas:</strong> {class_duration} horas</p>
       <p><strong>Online?</strong> {online}</p>
       <p><strong>Disponível?</strong> {available}</p>
-      <p><strong>Origem:</strong> {origin} pelo {profile} {userName}</p>
+      <p><strong>Origem:</strong> {origin}</p>
+      <Stack direction="horizontal" gap={1}>
+        <span><strong>Professor:</strong> </span>
+        {
+          teacherName 
+          ? <a href={`/profile/${teacherId}`}>{teacherName}</a>
+          : <span>Não definido</span>
+        }
+      </Stack>
+        
     </div>
   )
 }

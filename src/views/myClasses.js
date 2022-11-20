@@ -12,7 +12,6 @@ export default class MyClasses extends React.Component {
 
   async componentDidMount() {
     const { data } = await axios.get("http://localhost:8080/teachers/user/" + localStorage.getItem("userId"))
-    console.log("data", data)
     await axios.get("http://localhost:8080/teachers/" + data.data.id + "/classrooms")
       .then(async ({ data }) => {
         if(data.status === 200){

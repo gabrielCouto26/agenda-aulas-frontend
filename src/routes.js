@@ -3,17 +3,23 @@ import Register from "./views/register";
 import NewClass from "./views/newClass";
 import MyClasses from "./views/myClasses";
 import ClassDetails from "./views/classDetails";
+import Profile from "./views/profile";
 
 const routes = [
     {
-        path: "/register",
-        name: "Register",
-        component: <Register/>
+      path: "/register",
+      name: "Register",
+      component: <Register/>
     },
     {
-        path: "/dashboard",
-        name: "Dashboard",
-        component: <Dashboard/>
+      path: "/profile/:id",
+      name: "Profile",
+      component: <Profile/>
+    },
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      component: <Dashboard/>
     },
     {
       path: "/class/new",

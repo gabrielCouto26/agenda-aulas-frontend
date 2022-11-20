@@ -3,16 +3,11 @@ import { Stack, Nav, Navbar } from "react-bootstrap";
 import { useEffect, useState } from 'react';
 
 export default function Menu() {
-  const [logout, setLogout] = useState(false)
-
-  const handleLogout = () => {
-    setLogout(true)
-  }
+  const [userId, setUserId] = useState("")
 
   useEffect(() => {
-    localStorage.setItem("userId", null)
-    localStorage.setItem("profileType", null)
-  }, [logout])
+    setUserId(localStorage.getItem("userId"))
+  }, [userId])
 
   return (
     <Navbar bg="light" expand="lg">
@@ -24,12 +19,8 @@ export default function Menu() {
             <Stack direction="horizontal">
               <Nav.Link href="/class/new">Nova Classe</Nav.Link>
               <Nav.Link href="/class/list">Minhas Classes</Nav.Link>
-              <Nav.Link href="/profile">Perfil</Nav.Link>
+              <Nav.Link href={`/profile/${userId}`}>Perfil</Nav.Link>
             </Stack>
-            {
-              window.location.pathname !== '/' && window.location.pathname !== '/register' &&
-              <Nav.Link href="/" className="btn btn-primary text-white" onClick={handleLogout.bind(this)}>Sair</Nav.Link>
-            }
           </Nav>
         </Navbar.Collapse>
       </Container>
