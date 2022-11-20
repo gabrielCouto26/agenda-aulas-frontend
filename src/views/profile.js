@@ -18,7 +18,7 @@ export default function Profile() {
   useEffect(() => {
     getUser(id)
     isSelf()
-  })
+  }, [id])
 
   const getUser = (id) => {
     axios.get("http://localhost:8080/users/" + id)
