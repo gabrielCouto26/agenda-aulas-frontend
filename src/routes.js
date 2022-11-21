@@ -3,9 +3,9 @@ import Register from "./views/register";
 import NewClass from "./views/newClass";
 import MyClasses from "./views/myClasses";
 import ClassDetails from "./views/classDetails";
+import SubjectDetails from "./views/subjectDetails"
 import Profile from "./views/profile";
 import NotFound from "./views/notFound";
-
 import { Navigate } from "react-router-dom";
 
 const routes = [
@@ -46,6 +46,11 @@ const routes = [
     path: "/class/:id/details",
     name: "Class Details",
     component: <ClassDetails />
+  },
+  {
+    path: "/subject/:id/details",
+    name: "Subject Details",
+    component: <SubjectDetails />
   }
 ]
 

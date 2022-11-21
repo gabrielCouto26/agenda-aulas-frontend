@@ -35,9 +35,9 @@ export default class Dashboard extends React.Component{
     render(){
         return (
             <Stack gap={4} className="mt-4">
-                <ListClasses title="Classes disponíveis" classes={this.state.availableClasses}/>
-                <ListClasses title={`Classes sugeridas ${this.state.requestedText}`} classes={this.state.sugestedClasses}/>
-                <ListClasses title="Tópicos" classes={this.state.subjects}/>
+                <ListClasses href="class" title="Classes disponíveis" classes={this.state.availableClasses}/>
+                <ListClasses href="class" title={`Classes sugeridas ${this.state.requestedText}`} classes={this.state.sugestedClasses}/>
+                <ListClasses href="subject" title="Tópicos" classes={this.state.subjects}/>
             </Stack>
         )
     }
