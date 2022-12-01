@@ -11,8 +11,9 @@ export default class MyClasses extends React.Component {
   }
 
   async componentDidMount() {
-    const { data } = await axios.get("http://localhost:8080/teachers/user/" + localStorage.getItem("userId"))
-    await axios.get("http://localhost:8080/teachers/" + data.data.id + "/classrooms")
+    const userType = localStorage.getItem("profileType") === '1' ? "students" : "teachers"
+    const { data } = await axios.get(`http://localhost:8080/${userType}/user/` + localStorage.getItem("userId"))
+    await axios.get(`http://localhost:8080/${userType}/` + data.data.id + "/classrooms")
       .then(async ({ data }) => {
         if(data.status === 200){
           let inProgress = []
@@ -38,12 +39,12 @@ export default class MyClasses extends React.Component {
   render() {
     return (
       <Stack gap={4} className="mt-4">
-        <ListClasses title="Classes em andamento" classes={this.state.inProgress}/>
+        <ListClasses title="Classes em andamento" href="class" classes={this.state.inProgress}/>
         {
           localStorage.getItem("profileType") === "2" &&
-          <ListClasses title="Classes oferecidas" classes={this.state.offered}/>
+          <ListClasses title="Classes oferecidas" href="class" classes={this.state.offered}/>
         }
-        <ListClasses title="Classes finalizadas" classes={this.state.finished}/>
+        <ListClasses title="Classes finalizadas" href="class" classes={this.state.finished}/>
       </Stack>
     )
   }
