@@ -14,6 +14,7 @@ export default function Profile() {
   const [domain, setDomain] = useState("")
   const [experience, setExperience] = useState("")
   const [teacherSince, setTeacherSince] = useState("")
+  const [isStudent, setIsStudent] = useState(true)
 
   useEffect(() => {
     getUser(id)
@@ -28,30 +29,30 @@ export default function Profile() {
         setBirthDate(data.data.birth_date)
         setMemberSince(data.data.created_at)
 
-        if(isStudent()) getStudent()
-        else getTeacher()
+        getStudent(id)
       })
   }
 
   const getStudent = (id) => {
     axios.get("http://localhost:8080/students/user/" + id)
       .then(({ data }) => {
-        setFormationLevel(data.data.formation_level)
+        if (data.status === 404) {
+          setIsStudent(false)
+          getTeacher(id)
+        } else 
+          setFormationLevel(data.data.formation_level)
       })
   }
 
   const getTeacher = (id) => {
     axios.get("http://localhost:8080/teachers/user/" + id)
       .then(({ data }) => {
+        console.log('entrou aqui')
         setFormationLevel(data.data.formation_level)
         setDomain(data.data.domain)
-        setExperience(data.data.experiencie)
+        setExperience(data.data.experience)
         setTeacherSince(data.data.teacher_since)
       })
-  }
-
-  const isStudent = () => {
-    return localStorage.getItem("profileType") === "1" ? true : false
   }
 
   const isSelf = () => {
@@ -65,11 +66,11 @@ export default function Profile() {
       <p><strong>Email:</strong> {email}</p>
       <p><strong>Idade:</strong> {birthDate}</p>
       {
-        isStudent() === true &&
+        isStudent === true &&
         <p><strong>Formação:</strong> {formationLevel}</p>
       }
       {
-        !isStudent() &&
+        !isStudent &&
         <div>
           <p><strong>Formação:</strong> {formationLevel}</p>
           <p><strong>Domínio:</strong> {domain}</p>

@@ -23,6 +23,7 @@ export default function ClassDetails() {
   const [teacherName, setTeacherName] = useState("")
   const [studentIdAccept, setStudentIdAccept] = useState("")
   const [teacherIdAccept, setTeacherIdAccept] = useState("")
+  const [teacherUserId, setTeacherUserId] = useState("")
   const [classroomStudents, setClassroomStudents] = useState([])
   const [shouldRedirect, setShouldRedirect] = useState(false)
 
@@ -111,6 +112,7 @@ export default function ClassDetails() {
   const getTeacher = (id) => {
     axios.get("http://localhost:8080/teachers/" + id)
     .then(({ data }) => {
+      setTeacherUserId(data.data.user_id)
 
       axios.get("http://localhost:8080/users/" + data.data.user_id)
       .then(({ data }) => {
@@ -134,7 +136,7 @@ export default function ClassDetails() {
         <span><strong>Professor:</strong> </span>
         {
           teacherId 
-          ? <a href={`/profile/${teacherId}`}>{teacherName}</a>
+          ? <a href={`/profile/${teacherUserId}`}>{teacherName}</a>
           : <span>Não definido</span>
         }
       </Stack>
